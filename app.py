@@ -96,4 +96,4 @@ if st.session_state.messages[-1]["role"] != "assistant":
 
 
 # Different ways to use the API
-st.sidebar.download_button('Download Chat History', st.session_state.messages, 'text/csv')
+st.sidebar.download_button('Download Chat History', str(st.session_state.messages), 'text/csv')
