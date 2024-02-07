@@ -26,4 +26,31 @@ if numPlFilter:
 else:    
     df = df.copy()
 
+st.data_editor(
+    df,
+    column_config={
+        "playingTime": st.column_config.ProgressColumn(
+            "Playing Time",
+            help="Playing Time in minutes",
+            format="%f",
+            min_value=0,
+            max_value=120,
+        ),
+         "averageRating": st.column_config.ProgressColumn(
+            "Average Rating",
+            help="Avg Rating from BGG",
+            format="%f",
+            min_value=0,
+            max_value=10,
+        ),
+             "numPlays": st.column_config.ProgressColumn(
+            "Number of Plays",
+            help="Number of plays logged at cafe",
+            format="%f",
+            min_value=0,
+            max_value=300,
+        ),
+    },
+    hide_index=True,
+)
 st.write(df)
