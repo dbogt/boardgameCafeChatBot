@@ -96,5 +96,5 @@ if st.session_state.messages[-1]["role"] != "assistant":
 
 
 # Download chat history
-text = [f"{line}\n" for line in st.session_state.messages]
+text = "\n".join(st.session_state.messages)
 st.sidebar.download_button('Download Chat History', str(text), file_name="chat.txt")
