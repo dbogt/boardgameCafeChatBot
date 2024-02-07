@@ -26,6 +26,15 @@ sys_prompt = """You are a chatbot for a board game cafe, equipped to help custom
  Your recommendations should be inventive yet accurate, exclusively suggesting games listed in the provided file, without fabricating non-existent options.
  """
 
+sys_prompt2 = """You are a chatbot for a board game cafe, equipped to help customers select the perfect game from the cafe's collection based on their preferences, group size, and available playtime. \
+ Your interactions begin by inquiring about the number of participants, the duration they have for game play, and their preferred game genre. \
+ Utilize the information provided in the csv file to identify games that match their criteria, ensuring the selected game accommodates the group's size (within the minPlayers and maxPlayers range) and fits within their time frame (playingTime). \
+ Use the userComment field in the file to identify games that match the customer's preferred game genre. \
+ Your recommendations should be inventive. Try to suggest games listed in the provided file, without fabricating non-existent options. \
+ Use a friendly and humorous tone, with some hints of Canadianisms.
+ """
+
+
 @st.cache_resource(show_spinner=False)
 def load_data():
     with st.spinner(text="Loading and indexing the board games collection csv file – hang tight! This should take 1-2 minutes."):
@@ -39,10 +48,27 @@ def load_data():
       index = VectorStoreIndex.from_documents(docs, service_context=service_context)
       return index
 
+@st.cache_resource(show_spinner=False)
+def load_data2():
+    with st.spinner(text="Loading and indexing the board games collection csv file – hang tight! This should take 1-2 minutes."):
+        
+      #SimpleCSVReader = download_loader("SimpleCSVReader")
+      #loader = SimpleCSVReader(encoding="utf-8")
+      #docs = loader.load_data(file=Path('boardgames.csv'))
+      reader = SimpleDirectoryReader(input_dir="./data", recursive=False)
+      docs = reader.load_data()
+      service_context = ServiceContext.from_defaults(llm=OpenAI(model="gpt-3.5-turbo", temperature=1, system_prompt=sys_prompt2))
+      index = VectorStoreIndex.from_documents(docs, service_context=service_context)
+      return index
+
 index = load_data()
+index2 = load_data2()
 
 if "chat_engine" not in st.session_state.keys(): # Initialize the chat engine
         st.session_state.chat_engine = index.as_chat_engine(chat_mode="condense_question", verbose=True)
+
+if "chat_engine2" not in st.session_state.keys(): # Initialize the chat engine
+        st.session_state.chat_engine2 = index2.as_chat_engine(chat_mode="openai", verbose=True)
 
 if prompt := st.chat_input("Your question"): # Prompt for user input and save to chat history
     st.session_state.messages.append({"role": "user", "content": prompt})
@@ -51,11 +77,23 @@ for message in st.session_state.messages: # Display the prior chat messages
     with st.chat_message(message["role"]):
         st.write(message["content"])
 
+modelPicks = ['concise model', 'openai friendly model']
+model = st.sidebar.selectbox('Pick a chatbot model',modelPicks)
+
 # If last message is not from assistant, generate a new response
 if st.session_state.messages[-1]["role"] != "assistant":
     with st.chat_message("assistant"):
         with st.spinner("Thinking..."):
-            response = st.session_state.chat_engine.chat(prompt)
+
+            if model == "concise model":
+                     response = st.session_state.chat_engine.chat(prompt)
+            else:
+                     response = st.session_state.chat_engine2.chat(prompt)
             st.write(response.response)
             message = {"role": "assistant", "content": response.response}
             st.session_state.messages.append(message) # Add response to message history
+
+
+
+# Different ways to use the API
+st.sidebar.download_button('Download Chat History', st.session_state.messages, 'text/csv')
