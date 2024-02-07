@@ -1,7 +1,7 @@
 import pandas as pd
 import streamlit as st
 
-df = pd.read_csv('boardgames.csv')
+df = pd.read_csv('boardgames_full.csv')
 st.title("Board Game Collection")
 st.write("Filter for games on the side")
 
@@ -29,6 +29,9 @@ else:
 st.data_editor(
     df,
     column_config={
+        "image": st.column_config.ImageColumn(
+            "Image", help="Preview board game covers"
+        ),
         "playingTime": st.column_config.ProgressColumn(
             "Playing Time",
             help="Playing Time in minutes",
@@ -53,4 +56,3 @@ st.data_editor(
     },
     hide_index=True,
 )
-st.write(df)
