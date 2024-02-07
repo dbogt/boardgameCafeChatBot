@@ -73,6 +73,7 @@ if openai_api_key == adminPass:
 else:
          if not openai_api_key.startswith('sk-'):
              keyOK = 0
+             openai.api_key = ""
              st.sidebar.warning('Please enter your OpenAI API key!', icon='⚠')
          
          else:
@@ -114,8 +115,10 @@ if keyOK:
                      st.write(response.response)
                      message = {"role": "assistant", "content": response.response}
                      st.session_state.messages.append(message) # Add response to message history
-   del openai_api_key #delete key from session state after every run
-
+del openai_api_key #delete key from session state after every run
+st.sidebar.write("DEBUG")
+st.sidebar.write(keyOK)
+st.sidebar.write(openai_api_key)
          
 
 
