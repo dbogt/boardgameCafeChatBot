@@ -9,7 +9,10 @@ from pathlib import Path
 #Based off tutorial from: https://blog.streamlit.io/build-a-chatbot-with-custom-data-sources-powered-by-llamaindex/
 
 st.set_page_config(page_title="Chat with Board Game Cafe Bot, powered by LlamaIndex", page_icon="🦙", layout="centered", initial_sidebar_state="auto", menu_items=None)
-openai.api_key = st.secrets.openai_key
+# openai.api_key = st.secrets.openai_key
+adminPass = st.secrets.adminPass
+
+
 st.title("Chat with Board Game Cafe Bot, powered by LlamaIndex 💬🦙")
 st.info("This app was inspired by the tutorial from [blog post](https://blog.streamlit.io/build-a-chatbot-with-custom-data-sources-powered-by-llamaindex/)", icon="📃")
          
@@ -60,6 +63,16 @@ def load_data2():
       service_context = ServiceContext.from_defaults(llm=OpenAI(model="gpt-3.5-turbo", temperature=1, system_prompt=sys_prompt2))
       index = VectorStoreIndex.from_documents(docs, service_context=service_context)
       return index
+#Enter open AI Key
+openai_api_key = st.sidebar.text_input('OpenAI API Key')
+if openai_api_key == adminPass:
+         openai.api_key = st.secrets.openai_key
+else:
+         if not openai_api_key.startswith('sk-'):
+             st.sidebar.warning('Please enter your OpenAI API key!', icon='⚠')
+         else:
+             openai.api_key = openai_api_key    
+         
 
 index = load_data()
 index2 = load_data2()
