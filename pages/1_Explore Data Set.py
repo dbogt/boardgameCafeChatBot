@@ -2,6 +2,7 @@ import pandas as pd
 import streamlit as st
 
 df = pd.read_csv('boardgames_full.csv')
+st.set_page_config(layout="wide",page_title='Board Game Cafe Collection')
 st.title("Board Game Collection")
 st.write("Filter for games on the side")
 
