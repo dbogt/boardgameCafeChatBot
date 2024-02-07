@@ -115,14 +115,18 @@ if keyOK:
                      st.write(response.response)
                      message = {"role": "assistant", "content": response.response}
                      st.session_state.messages.append(message) # Add response to message history
+
+         
 del openai_api_key #delete key from session state after every run
+
+# Download chat history
+if keyOK:
+         text = str(st.session_state.messages)
+         import pandas as pd
+         chatDF = pd.DataFrame(st.session_state.messages)
+         st.sidebar.download_button('Download Chat History as TXT', str(text), file_name="chat.txt")
+         st.sidebar.download_button('Download Chat History as CSV', data=chatDF.to_csv(index=False).encode('utf-8'), file_name="chat.csv")
 
          
 
 
-# Download chat history
-text = str(st.session_state.messages)
-import pandas as pd
-chatDF = pd.DataFrame(st.session_state.messages)
-st.sidebar.download_button('Download Chat History as TXT', str(text), file_name="chat.txt")
-st.sidebar.download_button('Download Chat History as CSV', data=chatDF.to_csv(index=False).encode('utf-8'), file_name="chat.csv")
