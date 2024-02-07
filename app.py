@@ -95,5 +95,14 @@ if st.session_state.messages[-1]["role"] != "assistant":
 
 
 
-# Different ways to use the API
-st.sidebar.download_button('Download Chat History', str(st.session_state.messages), 'text/csv')
+# Download chat history
+# st.sidebar.download_button('Download Chat History', str(st.session_state.messages), 'text/csv')
+
+with open('chat.txt', 'w') as f:
+         for line in st.session_state.messages:
+                  f.write(f"{line}\n")
+         btn = st.download_button(
+            label="Download chat",
+            data=f,
+            file_name="chat.txt"
+          )
