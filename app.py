@@ -63,50 +63,60 @@ def load_data2():
       service_context = ServiceContext.from_defaults(llm=OpenAI(model="gpt-3.5-turbo", temperature=1, system_prompt=sys_prompt2))
       index = VectorStoreIndex.from_documents(docs, service_context=service_context)
       return index
+
 #Enter open AI Key
+keyOK = 0
 openai_api_key = st.sidebar.text_input('OpenAI API Key')
 if openai_api_key == adminPass:
          openai.api_key = st.secrets.openai_key
+         keyOK = 1
 else:
          if not openai_api_key.startswith('sk-'):
+             keyOK = 0
              st.sidebar.warning('Please enter your OpenAI API key!', icon='⚠')
+         
          else:
+             keyOK = 1
              openai.api_key = openai_api_key    
          
+if keyOK:
+         index = load_data()
+         index2 = load_data2()
+         
+         if "chat_engine" not in st.session_state.keys(): # Initialize the chat engine
+                 st.session_state.chat_engine = index.as_chat_engine(chat_mode="condense_question", verbose=True)
+         
+         if "chat_engine2" not in st.session_state.keys(): # Initialize the chat engine
+                 st.session_state.chat_engine2 = index2.as_chat_engine(chat_mode="openai", verbose=True)
+         
+         if prompt := st.chat_input("Your question"): # Prompt for user input and save to chat history
+             st.session_state.messages.append({"role": "user", "content": prompt})
+         
+         for message in st.session_state.messages: # Display the prior chat messages
+             with st.chat_message(message["role"]):
+                 st.write(message["content"])
+else:
+         st.warning('Please enter your OpenAI API key!', icon='⚠')
+         
+if keyOK:
+         modelPicks = ['concise model', 'openai friendly model']
+         model = st.sidebar.selectbox('Pick a chatbot model',modelPicks)
 
-index = load_data()
-index2 = load_data2()
+         # If last message is not from assistant, generate a new response
+         if st.session_state.messages[-1]["role"] != "assistant":
+             with st.chat_message("assistant"):
+                 with st.spinner("Thinking..."):
+         
+                     if model == "concise model":
+                              response = st.session_state.chat_engine.chat(prompt)
+                     else:
+                              response = st.session_state.chat_engine2.chat(prompt)
+                     st.write(response.response)
+                     message = {"role": "assistant", "content": response.response}
+                     st.session_state.messages.append(message) # Add response to message history
+                     del openai_api_key #delete key from session state after every run
 
-if "chat_engine" not in st.session_state.keys(): # Initialize the chat engine
-        st.session_state.chat_engine = index.as_chat_engine(chat_mode="condense_question", verbose=True)
-
-if "chat_engine2" not in st.session_state.keys(): # Initialize the chat engine
-        st.session_state.chat_engine2 = index2.as_chat_engine(chat_mode="openai", verbose=True)
-
-if prompt := st.chat_input("Your question"): # Prompt for user input and save to chat history
-    st.session_state.messages.append({"role": "user", "content": prompt})
-
-for message in st.session_state.messages: # Display the prior chat messages
-    with st.chat_message(message["role"]):
-        st.write(message["content"])
-
-modelPicks = ['concise model', 'openai friendly model']
-model = st.sidebar.selectbox('Pick a chatbot model',modelPicks)
-
-# If last message is not from assistant, generate a new response
-if st.session_state.messages[-1]["role"] != "assistant":
-    with st.chat_message("assistant"):
-        with st.spinner("Thinking..."):
-
-            if model == "concise model":
-                     response = st.session_state.chat_engine.chat(prompt)
-            else:
-                     response = st.session_state.chat_engine2.chat(prompt)
-            st.write(response.response)
-            message = {"role": "assistant", "content": response.response}
-            st.session_state.messages.append(message) # Add response to message history
-            del openai_api_key #delete key from session state after every run
-
+         
 
 
 # Download chat history
