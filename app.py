@@ -116,9 +116,7 @@ if keyOK:
                      message = {"role": "assistant", "content": response.response}
                      st.session_state.messages.append(message) # Add response to message history
 del openai_api_key #delete key from session state after every run
-st.sidebar.write("DEBUG")
-st.sidebar.write(keyOK)
-st.sidebar.write(openai_api_key)
+
          
 
 
