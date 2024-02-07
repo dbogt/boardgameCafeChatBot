@@ -96,5 +96,8 @@ if st.session_state.messages[-1]["role"] != "assistant":
 
 
 # Download chat history
-text = "\n".join([line for line in st.session_state.messages])
-st.sidebar.download_button('Download Chat History', str(text), file_name="chat.txt")
+text = str(st.session_state.messages)
+import pandas as pd
+chatDF = pd.DataFrame(st.session_state.messages)
+st.sidebar.download_button('Download Chat History as TXT', str(text), file_name="chat.txt")
+st.sidebar.download_button('Download Chat History as CSV', chatDF, file_name="chat.csv")
