@@ -4,7 +4,7 @@ from llama_index.llms import OpenAI
 import openai
 from llama_index import SimpleDirectoryReader
 from pathlib import Path
-from llama_index import download_loader
+#from llama_index import download_loader
 
 #Based off tutorial from: https://blog.streamlit.io/build-a-chatbot-with-custom-data-sources-powered-by-llamaindex/
 
@@ -29,9 +29,12 @@ sys_prompt = """You are a chatbot for a board game cafe, equipped to help custom
 @st.cache_resource(show_spinner=False)
 def load_data():
     with st.spinner(text="Loading and indexing the board games collection csv file – hang tight! This should take 1-2 minutes."):
-      SimpleCSVReader = download_loader("SimpleCSVReader")
-      loader = SimpleCSVReader(encoding="utf-8")
-      docs = loader.load_data(file=Path('boardgames.csv'))
+        
+      #SimpleCSVReader = download_loader("SimpleCSVReader")
+      #loader = SimpleCSVReader(encoding="utf-8")
+      #docs = loader.load_data(file=Path('boardgames.csv'))
+      reader = SimpleDirectoryReader(input_dir="./data", recursive=False)
+      docs = reader.load_data()
       service_context = ServiceContext.from_defaults(llm=OpenAI(model="gpt-3.5-turbo", temperature=0.5, system_prompt=sys_prompt))
       index = VectorStoreIndex.from_documents(docs, service_context=service_context)
       return index
