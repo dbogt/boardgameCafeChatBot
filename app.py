@@ -21,15 +21,17 @@ I first created and tested the bot in a Google Colab file and trained it with a 
 The code behind can be found on my github: https://github.com/dbogt/boardgameCafeChatBot.
 
 From the left sidebar menu choose one of the pages:
-1. app - This is the main chatbot. Once you enter your own OpenAI API Key, it will allow you to try the bot. You will have two options: 
-         - concise model - model trained with a temperature setting of 0.5 on gpt-3.5-turbo and chat mode of "condense_question"
-         - openai friendly model -  model trained with a temperature setting of 1 on gpt-3.5-turbo and chat mode of "openai"
-         - As you play around with the models, you will notice the openai frindly model will provide longer answers with a friendlier tone.
+1. app - This is the main chatbot. Once you enter your own OpenAI API Key, it will allow you to try the bot.
+You will have two options: 
+- concise model - model trained with a temperature setting of 0.5 on gpt-3.5-turbo and chat mode of "condense_question"
+- openai friendly model -  model trained with a temperature setting of 1 on gpt-3.5-turbo and chat mode of "openai"
+As you play around with the models, you will notice the openai frindly model will provide longer answers with a friendlier tone.
+
 2. Explore Data Set - This page allows the user to explore the cafe's board game collection that was used to train the bot and "check" the answers the bot is giving. As you experiment with the bot, you will notice a couple things:
-         - The friendly model has a higher tendancy to "hallucinate" and provide recommendations for games that are not in the cafe/collection or games with faulty information.
-         - Both models also bring in "external" information about the games it is recommending. 
-         - For example, the csv used to train the data only had tags for some of the games on themes, but no descriptions of the game. 
-         - Yet, the models are able to provide accurate descriptions of the games due to the original gpt being trained on board games data sets.
+The friendly model has a higher tendancy to "hallucinate" and provide recommendations for games that are not in the cafe/collection or games with faulty information.
+- Both models also bring in "external" information about the games it is recommending. 
+- For example, the csv used to train the data only had tags for some of the games on themes, but no descriptions of the game. 
+- Yet, the models are able to provide accurate descriptions of the games due to the original gpt being trained on board games data sets.
 """
 with st.expander("See app info"):
     st.write(appDetails)
