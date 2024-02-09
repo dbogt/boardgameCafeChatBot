@@ -41,7 +41,7 @@ st.info("This app was inspired by the tutorial from [blog post](https://blog.str
          
 if "messages" not in st.session_state.keys(): # Initialize the chat messages history
     st.session_state.messages = [
-        {"role": "assistant", "content": "Ask me about board game recommendations at our cafe!"}
+        {"role": "assistant", "content": "Ask me about board game recommendations at our cafe! Please provide how many people are in your group and if you have any time constraints."}
     ]
 
 
