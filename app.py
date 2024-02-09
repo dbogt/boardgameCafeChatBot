@@ -12,6 +12,27 @@ st.set_page_config(page_title="Chat with Board Game Cafe Bot, powered by LlamaIn
 # openai.api_key = st.secrets.openai_key
 adminPass = st.secrets.adminPass
 
+appDetails = """
+Created by: [Bogdan Tudose](https://www.linkedin.com/in/tudosebogdan/) \n
+Date: Feb 8, 2024 \n
+Purpose: Showcase OpenAI API and Llamaindex to create a chatbot \n
+This chatbot is for a ficticious board game cafe that recommends to customers what games to play given preference on game theme, party/group size and time available to play a game. 
+I first created and tested the bot in a Google Colab file and trained it with a CSV of my game collection. I then used llamaindex package to create a vector index of the data (so that openAI API has an easier time parsing the data). 
+The code behind can be found on my github: https://github.com/dbogt/boardgameCafeChatBot.
+
+From the left sidebar menu choose one of the pages:
+- app - This is the main chatbot. Once you enter your own OpenAI API Key, it will allow you to try the bot. You will have two options: 
+         - concise model - model trained with a temperature setting of 0.5 on gpt-3.5-turbo and chat mode of "condense_question"
+         - openai friendly model -  model trained with a temperature setting of 1 on gpt-3.5-turbo and chat mode of "openai"
+         - As you play around with the models, you will notice the openai frindly model will provide longer answers with a friendlier tone.
+- Explore Data Set - This page allows the user to explore the cafe's board game collection that was used to train the bot and "check" the answers the bot is giving. As you experiment with the bot, you will notice a couple things:
+         - The friendly model has a higher tendancy to "hallucinate" and provide recommendations for games that are not in the cafe/collection or games with faulty information.
+         - Both models also bring in "external" information about the games it is recommending. 
+         - For example, the csv used to train the data only had tags for some of the games on themes, but no descriptions of the game. 
+         - Yet, the models are able to provide accurate descriptions of the games due to the original gpt being trained on board games data sets.
+"""
+with st.expander("See app info"):
+    st.write(appDetails)
 
 st.title("Chat with Board Game Cafe Bot, powered by LlamaIndex 💬🦙")
 st.info("This app was inspired by the tutorial from [blog post](https://blog.streamlit.io/build-a-chatbot-with-custom-data-sources-powered-by-llamaindex/)", icon="📃")
