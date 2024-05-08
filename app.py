@@ -1,11 +1,11 @@
 import streamlit as st
 # from llama_index.core import VectorStoreIndex
-from llama_index.core import VectorStoreIndex, ServiceContext, Document
+from llama_index.core import VectorStoreIndex, ServiceContext, Document, SimpleDirectoryReader
 # from llama_index import ServiceContext, Document
 # from llama_index.llms import OpenAI
 from llama_index.llms.openai import OpenAI
 import openai
-from llama_index import SimpleDirectoryReader
+# from llama_index import SimpleDirectoryReader
 from pathlib import Path
 #from llama_index import download_loader
 
