@@ -98,7 +98,7 @@ def load_data2():
 
 #Enter open AI Key
 keyOK = 0
-openai_api_key = st.sidebar.text_input('OpenAI API Key')
+openai_api_key = st.sidebar.text_input('OpenAI API Key', type="password")
 if openai_api_key == adminPass:
          openai.api_key = st.secrets.openai_key
          keyOK = 1
