@@ -3,6 +3,7 @@ from llama_index.core import VectorStoreIndex, SimpleDirectoryReader, Settings
 from llama_index.llms.openai import OpenAI
 import openai
 from pathlib import Path
+from nltk.corpus import stopwords
 
 #Based off tutorial from: https://blog.streamlit.io/build-a-chatbot-with-custom-data-sources-powered-by-llamaindex/
 #Great repo: https://github.com/carolinedfrasca/llamaindex-chat-with-streamlit-docs/blob/main/streamlit_app.py
