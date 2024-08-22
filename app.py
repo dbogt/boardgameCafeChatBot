@@ -78,12 +78,17 @@ def load_data():
       #SimpleCSVReader = download_loader("SimpleCSVReader")
       #loader = SimpleCSVReader(encoding="utf-8")
       #docs = loader.load_data(file=Path('boardgames.csv'))
-      reader = SimpleDirectoryReader(input_dir="./data", recursive=False)
+      reader = SimpleDirectoryReader(input_dir="./data", recursive=True)
       docs = reader.load_data()
-      service_context = ServiceContext.from_defaults(llm=OpenAI(model="gpt-3.5-turbo", temperature=0.5, system_prompt=sys_prompt))
-      index = VectorStoreIndex.from_documents(docs, service_context=service_context)
-
-        
+    #   service_context = ServiceContext.from_defaults(llm=OpenAI(model="gpt-3.5-turbo", temperature=0.5, system_prompt=sys_prompt))
+    #   index = VectorStoreIndex.from_documents(docs, service_context=service_context)
+      
+      Settings.llm = OpenAI(
+            model="gpt-3.5-turbo",
+            temperature=0.5,
+            system_prompt=sys_prompt) 
+      
+      index = VectorStoreIndex.from_documents(docs)
       return index
 
 @st.cache_resource(show_spinner=False)
@@ -93,10 +98,14 @@ def load_data2():
       #SimpleCSVReader = download_loader("SimpleCSVReader")
       #loader = SimpleCSVReader(encoding="utf-8")
       #docs = loader.load_data(file=Path('boardgames.csv'))
-      reader = SimpleDirectoryReader(input_dir="./data", recursive=False)
+      reader = SimpleDirectoryReader(input_dir="./data", recursive=True)
       docs = reader.load_data()
-      service_context = ServiceContext.from_defaults(llm=OpenAI(model="gpt-3.5-turbo", temperature=1, system_prompt=sys_prompt2))
-      index = VectorStoreIndex.from_documents(docs, service_context=service_context)
+      Settings.llm = OpenAI(
+            model="gpt-3.5-turbo",
+            temperature=1,
+            system_prompt=sys_prompt2) 
+      
+      index = VectorStoreIndex.from_documents(docs)
       return index
 
 #Enter open AI Key
