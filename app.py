@@ -1,6 +1,7 @@
 import streamlit as st
 # from llama_index.core import VectorStoreIndex
-from llama_index.core import VectorStoreIndex, ServiceContext, Document, SimpleDirectoryReader
+# from llama_index.core import VectorStoreIndex, ServiceContext, Document, SimpleDirectoryReader
+from llama_index.core import VectorStoreIndex, SimpleDirectoryReader, Settings
 # from llama_index import ServiceContext, Document
 # from llama_index.llms import OpenAI
 from llama_index.llms.openai import OpenAI
@@ -81,6 +82,8 @@ def load_data():
       docs = reader.load_data()
       service_context = ServiceContext.from_defaults(llm=OpenAI(model="gpt-3.5-turbo", temperature=0.5, system_prompt=sys_prompt))
       index = VectorStoreIndex.from_documents(docs, service_context=service_context)
+
+        
       return index
 
 @st.cache_resource(show_spinner=False)
