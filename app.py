@@ -5,6 +5,7 @@ import openai
 from pathlib import Path
 
 #Based off tutorial from: https://blog.streamlit.io/build-a-chatbot-with-custom-data-sources-powered-by-llamaindex/
+#Great repo: https://github.com/carolinedfrasca/llamaindex-chat-with-streamlit-docs/blob/main/streamlit_app.py
 
 st.set_page_config(page_title="Chat with Board Game Cafe Bot, powered by LlamaIndex", page_icon="🦙", layout="centered", initial_sidebar_state="auto", menu_items=None)
 # openai.api_key = st.secrets.openai_key
